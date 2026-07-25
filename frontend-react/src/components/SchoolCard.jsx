@@ -1,88 +1,196 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
+import { useSearch } from "../context/SearchContext";
+
 
 function SchoolCard({ school }) {
 
     const [expanded, setExpanded] = useState(false);
-const navigate = useNavigate();
+
+    const navigate = useNavigate();
+
+    const {
+        favorites,
+        setFavorites
+    } = useSearch();
+
+
+
+    const isFavorite = favorites.some(
+        s => s.school_id === school.school_id
+    );
+
+
+
+    function toggleFavorite() {
+
+        if (isFavorite) {
+
+            setFavorites(
+                favorites.filter(
+                    s => s.school_id !== school.school_id
+                )
+            );
+
+        } else {
+
+            setFavorites([
+                ...favorites,
+                school
+            ]);
+
+        }
+
+    }
+
+
+
+    const combinations =
+        school.matching_combinations || [];
+
+
+
     return (
 
-        <div className="schoolCard">
+        <article className="schoolCard">
+
+
+            <div className="favoriteRow">
+
+                <button
+
+                    className="favoriteBtn"
+
+                    onClick={toggleFavorite}
+
+                    title={
+                        isFavorite
+                        ? "Remove favorite"
+                        : "Add favorite"
+                    }
+
+                >
+
+                    {isFavorite ? "❤️" : "🤍"}
+
+                </button>
+
+            </div>
+
+
 
             <h3>{school.name}</h3>
+
+
 
             <div className="schoolInfo">
 
                 <p>📍 {school.county}</p>
 
-                <p>⭐ {school.cluster}</p>
+                <p>⭐ Cluster {school.cluster}</p>
 
-                <p>👨 {school.gender}</p>
+                <p>👥 {school.gender}</p>
 
                 <p>🏠 {school.accommodation}</p>
-                <p><strong>ID:</strong> {school.school_id}</p>
 
             </div>
 
-            <p>
+
+
+            <div className="matchInfo">
 
                 <strong>
-                    {school.matching_combinations.length}
+                    {combinations.length}
                 </strong>
 
-                {" "}matching subject combinations
+                {" "}matching combinations
 
-            </p>
+            </div>
+
+
 
             <div className="buttonGroup">
 
-    <button
-        className="viewBtn"
-        onClick={() => setExpanded(!expanded)}
-    >
-        {expanded
-            ? "▲ Hide Subject Combinations"
-            : "▼ View Subject Combinations"}
-    </button>
 
-    <button
-        className="detailsBtn"
-        onClick={() => navigate(`/school/${school.school_id}`)}
-    >
-        View School →
-    </button>
+                <button
 
-</div>
+                    className="viewBtn"
+
+                    onClick={() =>
+                        setExpanded(!expanded)
+                    }
+
+                >
+
+                    {expanded
+                    ? "▲ Hide combinations"
+                    : "▼ View combinations"}
+
+                </button>
+
+
+
+                <button
+
+                    className="detailsBtn"
+
+                    onClick={() =>
+                        navigate(`/school/${school.school_id}`)
+                    }
+
+                >
+
+                    View School →
+
+                </button>
+
+
+            </div>
+
+
+
             {expanded && (
 
                 <div className="combinations">
 
-                    {school.matching_combinations.map(combo => (
+
+                    {combinations.map(combo => (
 
                         <div
+
                             className="comboCard"
+
                             key={combo.code}
+
                         >
 
-                            <h4>{combo.code}</h4>
+                            <h4>
+                                {combo.code}
+                            </h4>
 
-                            <p>{combo.name}</p>
+                            <p>
+                                {combo.name}
+                            </p>
 
-                            <small>{combo.pathway}</small>
+                            <small>
+                                {combo.pathway}
+                            </small>
 
                         </div>
 
                     ))}
 
+
                 </div>
 
             )}
 
-        </div>
+
+        </article>
 
     );
 
 }
+
 
 export default SchoolCard;

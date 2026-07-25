@@ -4,28 +4,53 @@ function Results({ schools }) {
 
     return (
 
-        <section>
+        <section className="results">
 
-            <h2>Results</h2>
+            <div className="resultsHeader">
+
+                <h2>School Results</h2>
+
+                {schools.length > 0 && (
+
+                    <p>
+                        {schools.length} schools found
+                    </p>
+
+                )}
+
+            </div>
+
+
 
             {schools.length === 0 ? (
 
-                <div className="card">
+                <div className="emptyCard">
 
-                    No schools found.
+                    <h3>No schools found</h3>
+
+                    <p>
+                        Try changing your filters or search terms.
+                    </p>
 
                 </div>
 
             ) : (
 
-                schools.map(school => (
+                <div className="schoolsGrid">
 
-                    <SchoolCard
-                        key={school.school_id}
-                        school={school}
-                    />
+                    {schools.map((school) => (
 
-                ))
+                        <SchoolCard
+
+                            key={school.school_id}
+
+                            school={school}
+
+                        />
+
+                    ))}
+
+                </div>
 
             )}
 

@@ -1,10 +1,13 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const SearchContext = createContext();
+
 
 export function SearchProvider({ children }) {
 
     const [selectedSubjects, setSelectedSubjects] = useState([]);
+
+    const [favorites, setFavorites] = useState([]);
 
     const [schools, setSchools] = useState([]);
 
@@ -21,6 +24,124 @@ export function SearchProvider({ children }) {
 
     });
 
+
+    const [loaded, setLoaded] = useState(false);
+
+
+
+    // Load saved data
+    useEffect(() => {
+
+        const savedSearch = localStorage.getItem("searchState");
+
+
+        if (savedSearch) {
+
+            const data = JSON.parse(savedSearch);
+
+
+            setSelectedSubjects(
+                data.selectedSubjects || []
+            );
+
+
+            setSchoolName(
+                data.schoolName || ""
+            );
+
+
+            setFilters(
+                data.filters || {
+
+                    county: "",
+                    gender: "",
+                    cluster: "",
+                    accommodation: "",
+                    institutionType: "",
+                    sub_county: ""
+
+                }
+            );
+
+        }
+
+
+
+        const savedFavorites = localStorage.getItem("favorites");
+
+
+        if (savedFavorites) {
+
+            setFavorites(
+                JSON.parse(savedFavorites)
+            );
+
+        }
+
+
+        setLoaded(true);
+
+
+    }, []);
+
+
+
+    // Save search
+    useEffect(() => {
+
+        if (!loaded) return;
+
+
+        localStorage.setItem(
+
+            "searchState",
+
+            JSON.stringify({
+
+                selectedSubjects,
+
+                schoolName,
+
+                filters
+
+            })
+
+        );
+
+
+    }, [
+
+        selectedSubjects,
+
+        schoolName,
+
+        filters,
+
+        loaded
+
+    ]);
+
+
+
+    // Save favorites
+    useEffect(() => {
+
+        if (!loaded) return;
+
+
+        localStorage.setItem(
+
+            "favorites",
+
+            JSON.stringify(favorites)
+
+        );
+
+
+    }, [favorites, loaded]);
+
+
+
     return (
 
         <SearchContext.Provider
@@ -30,6 +151,9 @@ export function SearchProvider({ children }) {
                 selectedSubjects,
                 setSelectedSubjects,
 
+                favorites,
+                setFavorites,
+
                 schools,
                 setSchools,
 
@@ -37,7 +161,9 @@ export function SearchProvider({ children }) {
                 setSchoolName,
 
                 filters,
-                setFilters
+                setFilters,
+
+                loaded
 
             }}
 
@@ -51,8 +177,10 @@ export function SearchProvider({ children }) {
 
 }
 
+
+
 export function useSearch() {
-console.log("SearchProvider rendered");
+
     return useContext(SearchContext);
 
 }

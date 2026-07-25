@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
 
 function SchoolDetails() {
-
+const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -47,124 +47,280 @@ function SchoolDetails() {
         return <h2>Loading...</h2>;
 
     }
+const filteredCombinations = school
+    ? school.combinations.filter(combo =>
 
-    return (
+        combo.name
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
 
-        <div className="schoolDetails">
+        ||
 
-            <button
-                className="backBtn"
-                onClick={() => navigate(-1)}
-            >
-                ← Back to Results
-            </button>
+        combo.code
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
 
-            <div className="detailsCard">
+        ||
 
-                <h1>{school.name}</h1>
+        combo.pathway
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
 
-                <div className="detailsGrid">
+    )
+    : [];
+   return (
 
-                    <p><strong>📍 County:</strong> {school.county}</p>
+<div className="schoolDetails">
 
-                    <p><strong>🗺️ Sub County:</strong> {school.sub_county}</p>
 
-                    <p><strong>⭐ Cluster:</strong> {school.cluster}</p>
+    <button
+        className="backBtn"
+        onClick={() => navigate(-1)}
+    >
+        ← Back to Results
+    </button>
 
-                    <p><strong>👨 Gender:</strong> {school.gender}</p>
 
-                    <p><strong>🏠 Accommodation:</strong> {school.accommodation}</p>
 
-                    <p><strong>🏫 Institution:</strong> {school.institution_type}</p>
+    <div className="detailsCard">
 
-                </div>
-<div className="overviewSection">
 
-    <div className="overviewCard stemOverview">
+        <div className="schoolTitle">
 
-        <h3>🔵 STEM</h3>
+            <h1>
+                🏫 {school.name}
+            </h1>
 
-        <h1>{pathwayCounts["STEM"] || 0}</h1>
-
-        <p>Combinations</p>
-
-    </div>
-
-    <div className="overviewCard socialOverview">
-
-        <h3>🟢 Social Sciences</h3>
-
-        <h1>{pathwayCounts["SOCIAL SCIENCES"] || 0}</h1>
-
-        <p>Combinations</p>
-
-    </div>
-
-    <div className="overviewCard artsOverview">
-
-        <h3>🟠 Arts & Sports</h3>
-
-        <h1>{pathwayCounts["ARTS & SPORTS SCIENCE"] || 0}</h1>
-
-        <p>Combinations</p>
-
-    </div>
-
-    <div className="overviewCard totalOverview">
-
-        <h3>📚 Total</h3>
-
-        <h1>{school.combinations.length}</h1>
-
-        <p>Combinations</p>
-
-    </div>
-
-</div>
-                <h2>
-                    Subject Combinations ({school.combinations.length})
-                </h2>
-
-                <div className="combinations">
-
-                    {school.combinations.map(combo => (
-
-                        <div
-    className={`comboCard ${
-        combo.pathway === "STEM"
-            ? "stem"
-            : combo.pathway === "SOCIAL SCIENCES"
-            ? "social"
-            : "arts"
-    }`}
-    key={combo.code}
->
-
-   <span className={`pathwayBadge ${
-    combo.pathway === "STEM"
-        ? "stemBadge"
-        : combo.pathway === "SOCIAL SCIENCES"
-        ? "socialBadge"
-        : "artsBadge"
-}`}>
-    {combo.pathway}
-</span>
-
-    <h4>{combo.code}</h4>
-
-    <p>{combo.name}</p>
-
-</div>
-                    ))}
-
-                </div>
-
-            </div>
+            <p>
+                Senior School Profile
+            </p>
 
         </div>
 
-    );
 
+
+
+        <div className="detailsGrid">
+
+
+            <div>
+                📍
+                <strong> County</strong>
+                <span>{school.county}</span>
+            </div>
+
+
+            <div>
+                🗺️
+                <strong> Sub County</strong>
+                <span>{school.sub_county}</span>
+            </div>
+
+
+            <div>
+                ⭐
+                <strong> Cluster</strong>
+                <span>{school.cluster}</span>
+            </div>
+
+
+            <div>
+                👥
+                <strong> Gender</strong>
+                <span>{school.gender}</span>
+            </div>
+
+
+            <div>
+                🏠
+                <strong> Accommodation</strong>
+                <span>{school.accommodation}</span>
+            </div>
+
+
+            <div>
+                🏫
+                <strong> Type</strong>
+                <span>{school.institution_type}</span>
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <div className="overviewSection">
+
+
+            <div className="overviewCard stemOverview">
+
+                <h3>🔵 STEM</h3>
+
+                <h1>
+                    {pathwayCounts["STEM"] || 0}
+                </h1>
+
+                <p>
+                    Combinations
+                </p>
+
+            </div>
+
+
+
+            <div className="overviewCard socialOverview">
+
+                <h3>🟢 Social Sciences</h3>
+
+                <h1>
+                    {pathwayCounts["SOCIAL SCIENCES"] || 0}
+                </h1>
+
+                <p>
+                    Combinations
+                </p>
+
+            </div>
+
+
+
+
+            <div className="overviewCard artsOverview">
+
+                <h3>🟠 Arts & Sports</h3>
+
+                <h1>
+                    {pathwayCounts["ARTS & SPORTS SCIENCE"] || 0}
+                </h1>
+
+                <p>
+                    Combinations
+                </p>
+
+            </div>
+
+
+
+
+            <div className="overviewCard totalOverview">
+
+                <h3>📚 Total</h3>
+
+                <h1>
+                    {school.combinations.length}
+                </h1>
+
+                <p>
+                    Combinations
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <div className="comboSearch">
+
+
+            <input className="comboInput"
+
+                type="text"
+
+                placeholder="🔍 Search subject combinations..."
+
+                value={searchTerm}
+
+                onChange={(e)=>setSearchTerm(e.target.value)}
+
+            />
+
+
+        </div>
+
+
+
+
+
+        <h2 className="comboTitle">
+
+            Subject Combinations ({filteredCombinations.length})
+
+        </h2>
+
+
+
+
+        <div className="combinations">
+
+
+            {filteredCombinations.map(combo => (
+
+
+                <div
+
+                    className={`comboCard ${
+                    
+                    combo.pathway === "STEM"
+                    ? "stem"
+                    : combo.pathway === "SOCIAL SCIENCES"
+                    ? "social"
+                    : "arts"
+
+                    }`}
+
+                    key={combo.code}
+
+                >
+
+
+                    <span className={`pathwayBadge ${
+                    
+                    combo.pathway === "STEM"
+                    ? "stemBadge"
+                    : combo.pathway === "SOCIAL SCIENCES"
+                    ? "socialBadge"
+                    : "artsBadge"
+
+                    }`}>
+
+                        {combo.pathway}
+
+                    </span>
+
+
+
+                    <h4>
+                        {combo.code}
+                    </h4>
+
+
+                    <p>
+                        {combo.name}
+                    </p>
+
+
+
+                </div>
+
+
+            ))}
+
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+);
 }
-
 export default SchoolDetails;
