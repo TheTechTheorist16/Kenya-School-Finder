@@ -1,9 +1,11 @@
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 function SchoolCard({ school }) {
 
     const [expanded, setExpanded] = useState(false);
-
+const navigate = useNavigate();
     return (
 
         <div className="schoolCard">
@@ -19,6 +21,7 @@ function SchoolCard({ school }) {
                 <p>👨 {school.gender}</p>
 
                 <p>🏠 {school.accommodation}</p>
+                <p><strong>ID:</strong> {school.school_id}</p>
 
             </div>
 
@@ -32,17 +35,25 @@ function SchoolCard({ school }) {
 
             </p>
 
-            <button
-                className="viewBtn"
-                onClick={() => setExpanded(!expanded)}
-            >
+            <div className="buttonGroup">
 
-                {expanded
-                    ? "▲ Hide Subject Combinations"
-                    : "▼ View Subject Combinations"}
+    <button
+        className="viewBtn"
+        onClick={() => setExpanded(!expanded)}
+    >
+        {expanded
+            ? "▲ Hide Subject Combinations"
+            : "▼ View Subject Combinations"}
+    </button>
 
-            </button>
+    <button
+        className="detailsBtn"
+        onClick={() => navigate(`/school/${school.school_id}`)}
+    >
+        View School →
+    </button>
 
+</div>
             {expanded && (
 
                 <div className="combinations">

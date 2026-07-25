@@ -188,6 +188,8 @@ def search_schools(
     db.close()
 
     return results
+from fastapi import HTTPException
+
 @app.get("/schools/{school_id}")
 def get_school(school_id: str):
 
@@ -195,34 +197,32 @@ def get_school(school_id: str):
 
     school = (
         db.query(School)
+        .options(joinedload(School.combinations))
         .filter(School.school_id == school_id)
         .first()
     )
 
-    if school is None:
+    if not school:
         db.close()
-        return {"error": "School not found"}
-
-    combinations = []
-
-    for combo in school.combinations:
-        combinations.append({
-            "code": combo.combination_code,
-            "name": combo.combination_name,
-            "pathway": combo.pathway
-        })
+        raise HTTPException(status_code=404, detail="School not found")
 
     result = {
         "school_id": school.school_id,
         "name": school.name,
-        "region": school.region,
         "county": school.county,
         "sub_county": school.sub_county,
         "cluster": school.cluster,
         "gender": school.gender,
         "accommodation": school.accommodation,
         "institution_type": school.institution_type,
-        "subject_combinations": combinations
+        "combinations": [
+            {
+                "code": combo.combination_code,
+                "name": combo.combination_name,
+                "pathway": combo.pathway
+            }
+            for combo in school.combinations
+        ]
     }
 
     db.close()

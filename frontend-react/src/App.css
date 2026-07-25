@@ -543,3 +543,314 @@ section{
     background:white;
 
 }
+.buttonGroup{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:15px;
+
+}
+
+.detailsBtn{
+
+    background:#16a34a;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.detailsBtn:hover{
+
+    background:#15803d;
+
+    transform:translateY(-2px);
+
+}
+.schoolDetails{
+
+    padding:40px 8%;
+
+}
+
+.backBtn{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    margin-bottom:25px;
+
+    transition:.25s;
+
+}
+
+.backBtn:hover{
+
+    background:#1d4ed8;
+
+}
+.detailsCard{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:18px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.detailsGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:18px;
+
+    margin:30px 0;
+
+}
+
+.detailsGrid p{
+
+    background:#eef4ff;
+
+    padding:14px;
+
+    border-radius:12px;
+
+}
+
+.detailsCard h2{
+
+    margin-top:30px;
+
+    margin-bottom:20px;
+
+}
+.comboCard{
+
+    border-radius:16px;
+
+    padding:22px;
+
+    margin-bottom:18px;
+
+    transition:.25s;
+
+    border-left:6px solid;
+
+    background:white;
+
+}
+
+.comboCard:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+}
+
+.comboCard h4{
+
+    margin:12px 0 8px;
+
+    font-size:1.25rem;
+
+    font-weight:700;
+
+}
+
+.comboCard p{
+
+    color:#475569;
+
+    line-height:1.6;
+
+}
+
+.pathwayBadge{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+}
+
+.pathwayBadge{
+
+    display:inline-block;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:.85rem;
+
+    font-weight:700;
+
+    background:white;
+
+}
+.stem{
+
+    border-left-color:#2563eb;
+
+    background:#f8fbff;
+
+}
+
+.stem h4{
+
+    color:#2563eb;
+
+}
+
+.stem .pathwayBadge{
+
+    background:#dbeafe;
+
+    color:#2563eb;
+
+}
+.social{
+
+    border-left-color:#16a34a;
+
+    background:#f7fff9;
+
+}
+
+.social h4{
+
+    color:#15803d;
+
+}
+
+.social .pathwayBadge{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+.arts{
+
+    border-left-color:#f97316;
+
+    background:#fffaf5;
+
+}
+
+.arts h4{
+
+    color:#ea580c;
+
+}
+
+.arts .pathwayBadge{
+
+    background:#ffedd5;
+
+    color:#ea580c;
+
+}
+.pathwayBadge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:.82rem;
+
+    font-weight:700;
+
+}
+
+.pathwayBadge::before{
+
+    content:"";
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+}
+.stemBadge{
+
+    background:#dbeafe;
+
+    color:#2563eb;
+
+}
+
+.stemBadge::before{
+
+    background:#2563eb;
+
+}
+
+.socialBadge{
+
+    background:#dcfce7;
+
+    color:#15803d;
+
+}
+
+.socialBadge::before{
+
+    background:#16a34a;
+
+}
+
+.artsBadge{
+
+    background:#ffedd5;
+
+    color:#ea580c;
+
+}
+
+.artsBadge::before{
+
+    background:#f97316;
+
+}

@@ -1,27 +1,29 @@
-import { useState } from "react";
+import { useSearch } from "../context/SearchContext";
 import api from "../services/api";
+import { useEffect } from "react";
 
 import Hero from "../components/Hero";
 import SearchBar from "../components/SearchBar";
 import SubjectSelector from "../components/SubjectSelector";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
-
 function Home() {
 
-    const [selectedSubjects, setSelectedSubjects] = useState([]);
-    const [schools, setSchools] = useState([]);
-    const [schoolName, setSchoolName] = useState("");
+    const {
 
-    const [filters, setFilters] = useState({
-        county: "",
-        gender: "",
-        cluster: "",
-        accommodation: "",
-        institutionType: "",
-        sub_county: ""
-    });
+    selectedSubjects,
+    setSelectedSubjects,
 
+    schools,
+    setSchools,
+
+    schoolName,
+    setSchoolName,
+
+    filters,
+    setFilters
+
+} = useSearch();
     async function searchSchools() {
 
         try {
