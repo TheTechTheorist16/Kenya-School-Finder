@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kenya School Finder</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+
+            <h1>🇰🇪 Kenya School Finder</h1>
+
+            <p>
+                Find the best Senior School based on your preferred
+                subject combination.
+            </p>
+
+        </header>
+
+
+        <section class="filters">
+
+            <h2>Subjects</h2>
+
+            <div id="subjects"></div>
+
+            <hr>
+
+            <h2>Filters</h2>
+
+            <div class="filter-grid">
+
+                <div>
+
+                    <label>County</label>
+
+                    <select id="county">
+
+                        <option value="">All Counties</option>
+
+                    </select>
+
+                </div>
+
+                <div>
+
+                    <label>Sub County</label>
+
+                    <select id="subCounty">
+
+                        <option value="">All Sub Counties</option>
+
+                    </select>
+
+                </div>
+
+                <div>
+
+                    <label>Gender</label>
+
+                    <select id="gender">
+
+                        <option value="">All</option>
+
+                        <option value="Boys">Boys</option>
+                        <option value="Girls">Girls</option>
+                        <option value="Mixed">Mixed</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <br>
+
+            <button id="searchBtn">
+
+                🔍 Search Schools
+
+            </button>
+
+        </section>
+        <h2>Search School</h2>
+
+<input
+    type="text"
+    id="schoolSearch"
+    placeholder="Type a school name..."
+>
+
+<button id="schoolSearchBtn">
+    Search School
+</button>
+
+<div id="schoolDetails"></div>
+
+
+        <section id="resultsSection">
+
+            <h2>Search Results</h2>
+
+            <div id="results">
+
+                <p>No search performed.</p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

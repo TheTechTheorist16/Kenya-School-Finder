@@ -1,0 +1,410 @@
+/* ==========================
+   GLOBAL
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Inter, "Segoe UI", sans-serif;
+    background:#f4f8fc;
+    color:#222;
+    line-height:1.6;
+
+}
+
+/* ==========================
+   SUBJECT SELECTOR
+========================== */
+
+.subjectsGrid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:15px;
+
+}
+
+.subjectsGrid label{
+
+    background:white;
+    padding:14px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.25s;
+    border:2px solid transparent;
+    box-shadow:0 3px 10px rgba(0,0,0,.05);
+
+}
+
+.subjectsGrid label:hover{
+
+    background:#eef4ff;
+    border-color:#0b5ed7;
+    transform:translateY(-2px);
+
+}
+
+/* ==========================
+   SCHOOL CARD
+========================== */
+
+.schoolCard{
+
+    background:white;
+    padding:24px;
+    border-radius:18px;
+    margin-bottom:20px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    transition:.3s;
+    animation:fadeIn .5s ease;
+
+}
+
+.schoolCard:hover{
+
+    transform:translateY(-6px) scale(1.01);
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+
+}
+
+.schoolCard h3{
+
+    color:#0b5ed7;
+    margin-bottom:15px;
+
+}
+
+/* ==========================
+   FADE IN ANIMATION
+========================== */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ==========================
+   SCHOOL INFORMATION
+========================== */
+
+.schoolInfo{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:15px;
+
+}
+
+.schoolInfo p{
+
+    background:#edf4ff;
+    padding:10px 15px;
+    border-radius:999px;
+    font-weight:500;
+
+}
+
+/* ==========================
+   VIEW BUTTON
+========================== */
+
+.viewBtn{
+
+    margin-top:15px;
+    background:#0b5ed7;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.25s;
+    font-weight:600;
+
+}
+
+.viewBtn:hover{
+
+    background:#0847a8;
+    transform:translateY(-2px);
+
+}
+
+/* ==========================
+   SUBJECT COMBINATIONS
+========================== */
+
+.combinations{
+
+    margin-top:20px;
+
+}
+
+.comboCard{
+
+    background:#f7f9fc;
+    border-left:5px solid #0b5ed7;
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:12px;
+    transition:.2s;
+
+}
+
+.comboCard:hover{
+
+    background:#eef4ff;
+
+}
+
+.comboCard h4{
+
+    margin-bottom:5px;
+    color:#0b5ed7;
+
+}
+.header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:25px 8%;
+
+    background:white;
+
+    box-shadow:0 5px 25px rgba(0,0,0,.05);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:999;
+
+}
+
+.logo p{
+
+    color:#64748b;
+
+    margin-top:5px;
+
+}
+
+nav{
+
+    display:flex;
+
+    gap:35px;
+
+}
+
+nav a{
+
+    text-decoration:none;
+
+    color:#1e293b;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+nav a:hover{
+
+    color:#2563eb;
+
+}
+.hero{
+
+    padding:100px 20px;
+
+    text-align:center;
+
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+
+    color:white;
+
+    border-radius:0 0 40px 40px;
+
+    margin-bottom:50px;
+
+}
+
+.hero h2{
+
+    font-size:3.5rem;
+
+    font-weight:800;
+
+    margin-bottom:20px;
+
+}
+
+.hero p{
+
+    font-size:1.2rem;
+
+    max-width:700px;
+
+    margin:auto;
+
+    opacity:.9;
+
+}
+.searchBar{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-top:-35px;
+
+    margin-bottom:50px;
+
+    position:relative;
+
+    z-index:5;
+
+}
+
+.searchBar input{
+
+    width:650px;
+
+    max-width:70vw;
+
+    padding:18px 22px;
+
+    border:none;
+
+    border-radius:18px;
+
+    font-size:17px;
+
+    outline:none;
+
+    background:white;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+}
+
+.searchBar button{
+
+    padding:18px 28px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 8px 20px rgba(37,99,235,.35);
+
+}
+
+.searchBar button:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-2px);
+}
+section{
+
+    
+
+    width:min(1400px,95%);
+    margin:auto;
+     margin-bottom:40px;
+
+
+}
+
+
+   
+
+
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+
+    gap:25px;
+
+    margin-bottom:60px;
+
+}
+
+.statCard{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:.25s;
+
+}
+
+.statCard:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.statCard h2{
+
+    color:#2563eb;
+
+    font-size:2.5rem;
+
+}
+
+.statCard p{
+
+    color:#64748b;
+
+    margin-top:10px;
+
+}
