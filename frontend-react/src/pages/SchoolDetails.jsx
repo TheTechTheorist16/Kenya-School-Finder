@@ -8,6 +8,15 @@ function SchoolDetails() {
     const { id } = useParams();
 
     const [school, setSchool] = useState(null);
+    const pathwayCounts = school
+    ? school.combinations.reduce((acc, combo) => {
+
+        acc[combo.pathway] = (acc[combo.pathway] || 0) + 1;
+
+        return acc;
+
+    }, {})
+    : {};
 
     useEffect(() => {
 
@@ -69,7 +78,49 @@ function SchoolDetails() {
                     <p><strong>🏫 Institution:</strong> {school.institution_type}</p>
 
                 </div>
+<div className="overviewSection">
 
+    <div className="overviewCard stemOverview">
+
+        <h3>🔵 STEM</h3>
+
+        <h1>{pathwayCounts["STEM"] || 0}</h1>
+
+        <p>Combinations</p>
+
+    </div>
+
+    <div className="overviewCard socialOverview">
+
+        <h3>🟢 Social Sciences</h3>
+
+        <h1>{pathwayCounts["SOCIAL SCIENCES"] || 0}</h1>
+
+        <p>Combinations</p>
+
+    </div>
+
+    <div className="overviewCard artsOverview">
+
+        <h3>🟠 Arts & Sports</h3>
+
+        <h1>{pathwayCounts["ARTS & SPORTS SCIENCE"] || 0}</h1>
+
+        <p>Combinations</p>
+
+    </div>
+
+    <div className="overviewCard totalOverview">
+
+        <h3>📚 Total</h3>
+
+        <h1>{school.combinations.length}</h1>
+
+        <p>Combinations</p>
+
+    </div>
+
+</div>
                 <h2>
                     Subject Combinations ({school.combinations.length})
                 </h2>
