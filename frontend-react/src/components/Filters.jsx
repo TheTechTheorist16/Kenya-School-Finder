@@ -119,38 +119,38 @@ function Filters({
 
             <h2>Filters</h2>
 
-            <div className="card">
+            <div className="filtersGrid">
 
-                <label>
+                <label className="filterCard">
 
-                    County
+   <span>📍 County</span>
 
-                    <select
-                        value={county}
-                        onChange={(e) => setCounty(e.target.value)}
-                    >
+    <select
+        value={county}
+        onChange={(e) => setCounty(e.target.value)}
+    >
 
-                        <option value="">
-                            Any County
-                        </option>
+        <option value="">
+            Any County
+        </option>
 
-                        {counties.map(c => (
+        {counties.map(c => (
 
-                            <option
-                                key={c}
-                                value={c}
-                            >
-                                {c}
-                            </option>
+            <option
+                key={c}
+                value={c}
+            >
+                {c}
+            </option>
 
-                        ))}
+        ))}
 
-                    </select>
+    </select>
 
-                </label>
-                <label>
+</label>
+                <label className="filterCard">
 
-    Gender
+    <span>👥 Gender</span>
 
     <select
         value={gender}
@@ -176,9 +176,9 @@ function Filters({
     </select>
 
 </label>
-<label>
+<label className="filterCard">
 
-    Accommodation
+    <span>🛏️ Accommodation</span>
 
     <select
         value={accommodation}
@@ -192,9 +192,9 @@ function Filters({
     </select>
 
 </label>
-<label>
+<label className="filterCard">
 
-    Cluster
+   <span>⭐ Cluster</span>
 
     <select
         value={cluster}
@@ -222,9 +222,9 @@ function Filters({
 
 </label>
 
-<label>
+<label className="filterCard">
 
-    Institution Type
+    <span>🏫 Institution Type</span>
 
     <select
         value={institutionType}
@@ -249,9 +249,9 @@ function Filters({
     </select>
 
 </label>
-<label>
+<label className="filterCard">
 
-    Sub-county
+    <span>🗺️ Sub-county</span>
 
     <select
         value={subCounty}

@@ -1,132 +1,42 @@
-import { useState } from "react";
-import api from "./services/api";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header";
-import Hero from "./components/Hero";
-import SearchBar from "./components/SearchBar";
-import SubjectSelector from "./components/SubjectSelector";
-import Filters from "./components/Filters";
-import Results from "./components/Results";
-import Statistics from "./components/Statistics";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import SchoolDetails from "./pages/SchoolDetails";
+import NotFound from "./pages/NotFound";
 
 function App() {
-    const [selectedSubjects, setSelectedSubjects] = useState([]);
-    const [schools, setSchools] = useState([]);
-    const [schoolName, setSchoolName] = useState("");
-    const [filters, setFilters] = useState({
-    county: "",
-    gender: "",
-    cluster: "",
-    accommodation: "",
-    institutionType: "",
-    sub_county: ""
-});
-    async function searchSchools() {
-        try {
-
-            console.log("Searching with:");
-            console.log(selectedSubjects);
-            console.log("School Name:", schoolName);
-            console.log("County:", filters.county);
-
-            const response = await api.get("/search", { 
-                params: {
-                    subjects: selectedSubjects,
-                    school_name: schoolName,
-                    county: filters.county,
-                    sub_county: filters.sub_county,
-                    gender: filters.gender,
-                    cluster: filters.cluster,
-                    accommodation: filters.accommodation,
-                    institution_type: filters.institutionType,
-                },
-            });
-
-            setSchools(response.data);
-        } catch (error) {
-            console.error("Failed to search schools:", error);
-            setSchools([]);
-        }
-
-    }
 
     return (
 
-        <div>
+        <BrowserRouter>
 
             <Header />
 
-            <Hero />
-            <Statistics/>
+            <Routes>
 
-            <SearchBar
-                schoolName={schoolName}
-                setSchoolName={setSchoolName}
-                onSearch={searchSchools}
-            />
+                <Route path="/" element={<Home />} />
 
-            <SubjectSelector
-                selectedSubjects={selectedSubjects}
-                setSelectedSubjects={setSelectedSubjects}
-            />
+                <Route path="/about" element={<About />} />
 
-            <Filters
-    county={filters.county}
-    setCounty={(county) =>
-        setFilters((current) => ({
-            ...current,
-            county,
-        }))
-    }
+                <Route path="/contact" element={<Contact />} />
 
-    gender={filters.gender}
-    setGender={(gender) =>
-        setFilters((current) => ({
-            ...current,
-            gender,
-        }))
-    }
+                <Route
+                    path="/school/:id"
+                    element={<SchoolDetails />}
+                />
 
-    accommodation={filters.accommodation}
-    setAccommodation={(accommodation) =>
-        setFilters((current) => ({
-            ...current,
-            accommodation,
-        }))
-    }
+                <Route
+                    path="*"
+                    element={<NotFound />}
+                />
 
-    cluster={filters.cluster}
-    setCluster={(cluster) =>
-        setFilters((current) => ({
-            ...current,
-            cluster,
-        }))
-    }
+            </Routes>
 
-    institutionType={filters.institutionType}
-    setInstitutionType={(institutionType) =>
-        setFilters((current) => ({
-            ...current,
-            institutionType,
-        }))
-    }
-
-    subCounty={filters.sub_county}
-    setSubCounty={(sub_county) =>
-        setFilters((current) => ({
-            ...current,
-            sub_county,
-        }))
-    }
-/>
-    
-
-                
-            
-
-            <Results schools={schools} />
-
-        </div>
+        </BrowserRouter>
 
     );
 

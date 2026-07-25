@@ -2,7 +2,20 @@ import { useEffect, useState } from "react";
 
 import api from "../services/api";
 
+const icons = {
 
+    "Biology":"🧬",
+    "Chemistry":"🧪",
+    "Physics":"⚛",
+    "Mathematics":"➗",
+    "English":"📖",
+    "Geography":"🌍",
+    "History":"📜",
+    "Computer Studies":"💻",
+    "Agriculture":"🌱",
+    "Business Studies":"💼"
+
+};
 function SubjectSelector({
     selectedSubjects,
     setSelectedSubjects
@@ -65,24 +78,33 @@ function toggleSubject(subject) {
 
                     <div className="subjectsGrid">
 
-                        {subjects.map(subject => (
+    {subjects.map(subject => (
 
-                            <label key={subject}>
+        <div
+            key={subject}
+            className={`subjectCard ${
+                selectedSubjects.includes(subject) ? "selected" : ""
+            }`}
+            onClick={() => toggleSubject(subject)}
+        >
 
-                                <input
-    type="checkbox"
-    checked={selectedSubjects.includes(subject)}
-    onChange={() => toggleSubject(subject)}
-/>
+            <input
+                type="checkbox"
+                checked={selectedSubjects.includes(subject)}
+                readOnly
+            />
 
-                                {subject}
+            <span>
 
-                            </label>
+    {icons[subject] || "📚"} {subject}
 
-                        ))}
+</span>
 
-                    </div>
+        </div>
 
+    ))}
+
+</div>
                 )}
 
             </div>

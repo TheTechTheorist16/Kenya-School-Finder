@@ -1,4 +1,6 @@
+ import { Link } from "react-router-dom";
 function Header() {
+   
     return (
 
         <header className="header">
@@ -7,17 +9,16 @@ function Header() {
 
                 <h1>🎓 Kenya School Finder</h1>
 
-                <p>Find your perfect Senior School</p>
+                <p>Helping Kenyan students find the right senior school.</p>
 
             </div>
 
             <nav>
-
-                <a href="#">Home</a>
-                <a href="#">Schools</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
-
+<Link to="/">Home</Link>
+    <Link to="/">Schools</Link>
+    <Link to="/about">About</Link>
+    <Link to="/contact">Contact</Link>
+                
             </nav>
 
         </header>
