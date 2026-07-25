@@ -3,7 +3,6 @@ import api from "../services/api";
 import { useEffect, useRef } from "react";
 
 import Hero from "../components/Hero";
-import SearchBar from "../components/SearchBar";
 import SubjectSelector from "../components/SubjectSelector";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
@@ -11,23 +10,24 @@ import Results from "../components/Results";
 
 function Home() {
 
-   const {
+    const {
 
-    selectedSubjects,
-    setSelectedSubjects,
+        selectedSubjects,
+        setSelectedSubjects,
 
-    schools,
-    setSchools,
+        schools,
+        setSchools,
 
-    schoolName,
-    setSchoolName,
+        schoolName,
+        setSchoolName,
 
-    filters,
-    setFilters,
+        filters,
 
-    loaded
+        setFilters,
 
-} = useSearch();
+        loaded
+
+    } = useSearch();
 
 
 
@@ -79,58 +79,60 @@ function Home() {
 
 
 
-    // Load previous search after refresh
+
     useEffect(() => {
 
-    if (!loaded) return;
+        if (!loaded) return;
 
 
-    const hasSearch =
+        const hasSearch =
 
-        selectedSubjects.length > 0 ||
+            selectedSubjects.length > 0 ||
 
-        schoolName ||
+            schoolName ||
 
-        filters.county ||
+            filters.county ||
 
-        filters.gender ||
+            filters.gender ||
 
-        filters.cluster ||
+            filters.cluster ||
 
-        filters.accommodation ||
+            filters.accommodation ||
 
-        filters.institutionType ||
+            filters.institutionType ||
 
-        filters.sub_county;
-
-
-
-    if (hasSearch) {
-
-        searchSchools();
-
-    }
+            filters.sub_county;
 
 
-}, [loaded]);
+
+        if (hasSearch) {
+
+            searchSchools();
+
+        }
+
+
+    }, [loaded]);
+
+
+
 
 
     return (
 
         <>
 
-            <Hero />
 
+            <Hero
 
-            <SearchBar
+                searchTerm={schoolName}
 
-                schoolName={schoolName}
+                setSearchTerm={setSchoolName}
 
-                setSchoolName={setSchoolName}
-
-                onSearch={searchSchools}
+                handleSearch={searchSchools}
 
             />
+
 
 
             <SubjectSelector
@@ -142,7 +144,10 @@ function Home() {
             />
 
 
+
+
             <Filters
+
 
                 county={filters.county}
 
@@ -152,6 +157,7 @@ function Home() {
                         county
                     })
                 }
+
 
 
                 gender={filters.gender}
@@ -164,6 +170,8 @@ function Home() {
                 }
 
 
+
+
                 accommodation={filters.accommodation}
 
                 setAccommodation={(accommodation) =>
@@ -172,6 +180,8 @@ function Home() {
                         accommodation
                     })
                 }
+
+
 
 
                 cluster={filters.cluster}
@@ -184,6 +194,8 @@ function Home() {
                 }
 
 
+
+
                 institutionType={filters.institutionType}
 
                 setInstitutionType={(institutionType) =>
@@ -192,6 +204,8 @@ function Home() {
                         institutionType
                     })
                 }
+
+
 
 
                 subCounty={filters.sub_county}
@@ -203,7 +217,9 @@ function Home() {
                     })
                 }
 
+
             />
+
 
 
             <Results schools={schools} />
