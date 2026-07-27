@@ -1,45 +1,32 @@
-function Statistics(){
+import { useEffect, useState } from "react";
+import api from "../services/api";
 
-    return(
+function Statistics() {
+    const [stats, setStats] = useState(null);
 
-        <section className="stats">
+    useEffect(() => {
+        async function loadStats() {
+            try {
+                const response = await api.get("/statistics");
+                setStats(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
-            <div className="statCard">
+        loadStats();
+    }, []);
 
-                <h2>9000+</h2>
+    if (!stats) {
+        return <p>Loading...</p>;
+    }
 
-                <p>Schools</p>
-
-            </div>
-
-            <div className="statCard">
-
-                <h2>300+</h2>
-
-                <p>Subject Combinations</p>
-
-            </div>
-
-            <div className="statCard">
-
-                <h2>47</h2>
-
-                <p>Counties</p>
-
-            </div>
-
-            <div className="statCard">
-
-                <h2>24/7</h2>
-
-                <p>Available</p>
-
-            </div>
-
+    return (
+        <section>
+            <h2>{stats.schools}</h2>
+            <p>Schools</p>
         </section>
-
     );
-
 }
 
 export default Statistics;

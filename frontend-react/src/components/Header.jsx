@@ -18,6 +18,9 @@ function Header() {
     <Link to="/">Schools</Link>
     <Link to="/about">About</Link>
     <Link to="/contact">Contact</Link>
+    <Link to="/compare">
+    Compare
+</Link>
                 
             </nav>
 

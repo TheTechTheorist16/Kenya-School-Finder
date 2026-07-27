@@ -1,14 +1,60 @@
 import { useSearch } from "../context/SearchContext";
 import api from "../services/api";
 import { useEffect, useRef } from "react";
+import { useState } from "react";
+import TrackSelector from "../components/TrackSelector";
 
 import Hero from "../components/Hero";
-import SubjectSelector from "../components/SubjectSelector";
+import PathwaySelector from "../components/PathwaySelector";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
+import CompareBar from "../components/CompareBar";
+import Statistics from "../components/Statistics";
+import CombinationSelector from "../components/CombinationSelector";
 
 
 function Home() {
+const [selectedPathway, setSelectedPathway] = useState(null);
+const [selectedTrack, setSelectedTrack] = useState(null);
+const [combinations, setCombinations] = useState([]);
+useEffect(()=>{
+
+    if(!selectedTrack) return;
+
+
+    async function loadCombinations(){
+
+        try{
+
+            const response = await api.get(
+                "/subject-combinations",
+                {
+                    params:{
+                        track:selectedTrack
+                    }
+                }
+            );
+
+
+            setCombinations(response.data);
+
+
+        }catch(error){
+
+            console.error(error);
+
+            setCombinations([]);
+
+        }
+
+    }
+
+
+    loadCombinations();
+
+
+},[selectedTrack]);
+const [selectedCombination, setSelectedCombination] = useState(null);
 
     const {
 
@@ -31,8 +77,34 @@ function Home() {
 
 
 
-    const firstLoad = useRef(true);
+    
+async function loadCombinations(track) {
 
+    try {
+
+        const response = await api.get(
+            "/subject-combinations",
+            {
+                params: {
+                    track
+                }
+            }
+        );
+
+        setCombinations(response.data);
+
+    } catch(error) {
+
+        console.error(
+            "Failed loading combinations:",
+            error
+        );
+
+        setCombinations([]);
+
+    }
+
+}
 
 
     async function searchSchools() {
@@ -57,7 +129,8 @@ function Home() {
 
                     accommodation: filters.accommodation,
 
-                    institution_type: filters.institutionType
+                    institution_type: filters.institutionType,
+                    combination_code: selectedCombination?.code,
 
                 }
 
@@ -135,13 +208,46 @@ function Home() {
 
 
 
-            <SubjectSelector
+           <PathwaySelector
 
-                selectedSubjects={selectedSubjects}
+    onSelect={(pathway)=>{
 
-                setSelectedSubjects={setSelectedSubjects}
+        setSelectedPathway(pathway);
 
-            />
+        setSelectedTrack(null);
+
+    }}
+
+/>
+<TrackSelector
+
+    pathway={selectedPathway}
+
+    onSelect={(track)=>{
+
+        setSelectedTrack(track);
+
+        setSelectedCombination(null);
+
+        loadCombinations(track);
+
+    }}
+
+/>
+<CombinationSelector
+
+    combinations={combinations}
+
+    onSelect={(combo)=>{
+
+        setSelectedCombination(combo);
+
+        searchSchools();
+
+    }}
+
+/>
+
 
 
 
@@ -220,10 +326,10 @@ function Home() {
 
             />
 
-
+<Statistics />
 
             <Results schools={schools} />
-
+            <CompareBar />
 
         </>
 

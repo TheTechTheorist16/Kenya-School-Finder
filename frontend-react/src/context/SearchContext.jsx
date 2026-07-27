@@ -8,6 +8,7 @@ export function SearchProvider({ children }) {
     const [selectedSubjects, setSelectedSubjects] = useState([]);
 
     const [favorites, setFavorites] = useState([]);
+    const [compareSchools, setCompareSchools] = useState([]);
 
     const [schools, setSchools] = useState([]);
 
@@ -163,7 +164,9 @@ export function SearchProvider({ children }) {
                 filters,
                 setFilters,
 
-                loaded
+                loaded,
+                compareSchools,
+                setCompareSchools
 
             }}
 

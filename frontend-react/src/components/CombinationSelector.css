@@ -1,0 +1,80 @@
+.combinationSection {
+
+    width: 90%;
+    margin: 40px auto;
+    text-align: center;
+
+}
+
+
+.combinationSection h2 {
+
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #222;
+
+}
+
+
+.combinationGrid {
+
+    display: grid;
+
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(250px, 1fr)
+    );
+
+    gap: 20px;
+
+    margin-top: 25px;
+
+}
+
+
+.combinationCard {
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    cursor: pointer;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+    transition: 
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.combinationCard:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+
+}
+
+
+.combinationCard h3 {
+
+    font-size: 24px;
+
+    margin-bottom: 10px;
+
+    color: #2563eb;
+
+}
+
+
+.combinationCard p {
+
+    color: #555;
+
+    line-height: 1.5;
+
+}

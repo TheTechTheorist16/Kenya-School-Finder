@@ -7,6 +7,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import SchoolDetails from "./pages/SchoolDetails";
 import NotFound from "./pages/NotFound";
+import Compare from "./pages/Compare";
 
 function App() {
 
@@ -33,7 +34,10 @@ function App() {
                     path="*"
                     element={<NotFound />}
                 />
-
+                <Route
+                    path="/compare"
+                    element={<Compare />}
+                />
             </Routes>
 
         </BrowserRouter>

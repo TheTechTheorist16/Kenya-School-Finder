@@ -2,25 +2,28 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSearch } from "../context/SearchContext";
 
-
 function SchoolCard({ school }) {
-
-    const [expanded, setExpanded] = useState(false);
 
     const navigate = useNavigate();
 
+    const [expanded, setExpanded] = useState(false);
+
     const {
         favorites,
-        setFavorites
+        setFavorites,
+        compareSchools,
+        setCompareSchools
     } = useSearch();
 
-
+    const combinations = school.matching_combinations || [];
 
     const isFavorite = favorites.some(
-        s => s.school_id === school.school_id
+        favorite => favorite.school_id === school.school_id
     );
 
-
+    const isComparing = compareSchools.includes(
+        school.school_id
+    );
 
     function toggleFavorite() {
 
@@ -28,7 +31,8 @@ function SchoolCard({ school }) {
 
             setFavorites(
                 favorites.filter(
-                    s => s.school_id !== school.school_id
+                    favorite =>
+                        favorite.school_id !== school.school_id
                 )
             );
 
@@ -43,154 +47,205 @@ function SchoolCard({ school }) {
 
     }
 
+    function toggleCompare() {
 
+        if (isComparing) {
 
-    const combinations =
-        school.matching_combinations || [];
+            setCompareSchools(
+                compareSchools.filter(
+                    id => id !== school.school_id
+                )
+            );
 
+            return;
 
+        }
+
+        if (compareSchools.length >= 4) {
+
+            alert("You can compare up to 4 schools.");
+
+            return;
+
+        }
+
+        setCompareSchools([
+            ...compareSchools,
+            school.school_id
+        ]);
+
+    }
 
     return (
 
-        <article className="schoolCard">
+    <article className="schoolCard">
 
 
-            <div className="favoriteRow">
+        <div className="cardTop">
 
-                <button
+            <div>
 
-                    className="favoriteBtn"
+                <h3 className="schoolName">
+                    {school.name}
+                </h3>
 
-                    onClick={toggleFavorite}
-
-                    title={
-                        isFavorite
-                        ? "Remove favorite"
-                        : "Add favorite"
-                    }
-
-                >
-
-                    {isFavorite ? "❤️" : "🤍"}
-
-                </button>
+                <p className="location">
+                    📍 {school.county}
+                </p>
 
             </div>
 
 
-
-            <h3>{school.name}</h3>
-
-
-
-            <div className="schoolInfo">
-
-                <p>📍 {school.county}</p>
-
-                <p>⭐ Cluster {school.cluster}</p>
-
-                <p>👥 {school.gender}</p>
-
-                <p>🏠 {school.accommodation}</p>
-
+            <div className="scoreBadge">
+                ⭐ {school.recommendation_score ?? 0}
             </div>
 
-
-
-            <div className="matchInfo">
-
-                <strong>
-                    {combinations.length}
-                </strong>
-
-                {" "}matching combinations
-
-            </div>
+        </div>
 
 
 
-            <div className="buttonGroup">
+        <div className="badges">
 
-
-                <button
-
-                    className="viewBtn"
-
-                    onClick={() =>
-                        setExpanded(!expanded)
-                    }
-
-                >
-
-                    {expanded
-                    ? "▲ Hide combinations"
-                    : "▼ View combinations"}
-
-                </button>
-
-
-
-                <button
-
-                    className="detailsBtn"
-
-                    onClick={() =>
-                        navigate(`/school/${school.school_id}`)
-                    }
-
-                >
-
-                    View School →
-
-                </button>
-
-
-            </div>
-
-
-
-            {expanded && (
-
-                <div className="combinations">
-
-
-                    {combinations.map(combo => (
-
-                        <div
-
-                            className="comboCard"
-
-                            key={combo.code}
-
-                        >
-
-                            <h4>
-                                {combo.code}
-                            </h4>
-
-                            <p>
-                                {combo.name}
-                            </p>
-
-                            <small>
-                                {combo.pathway}
-                            </small>
-
-                        </div>
-
-                    ))}
-
-
-                </div>
-
+            {school.accommodation && (
+                <span className="badge">
+                    🏫 {school.accommodation}
+                </span>
             )}
 
 
-        </article>
+            {school.gender && (
+                <span className="badge">
+                    👥 {school.gender}
+                </span>
+            )}
 
-    );
 
+            {school.category && (
+                <span className="badge">
+                    🟦 {school.category}
+                </span>
+            )}
+
+
+            {school.cluster && (
+                <span className="badge">
+                    ⭐ Cluster {school.cluster}
+                </span>
+            )}
+
+        </div>
+
+
+
+        <div className="pathwayBox">
+
+            <small>
+                Pathway
+            </small>
+
+
+            <strong>
+                {combinations.length} matching combinations
+            </strong>
+
+        </div>
+
+
+
+
+        <div className="cardActions">
+
+
+            <button
+                className="favoriteBtn"
+                onClick={toggleFavorite}
+            >
+                {isFavorite ? "❤️ Saved" : "🤍 Save"}
+            </button>
+
+
+
+            <button
+                className="compareBtn"
+                onClick={toggleCompare}
+            >
+                {isComparing
+                    ? "✓ Comparing"
+                    : "⚖️ Compare"}
+            </button>
+
+
+        </div>
+
+
+
+        <div className="buttonGroup">
+
+
+            <button
+                className="viewBtn"
+                onClick={() =>
+                    setExpanded(!expanded)
+                }
+            >
+
+                {expanded
+                    ? "▲ Hide combinations"
+                    : "▼ View combinations"}
+
+            </button>
+
+
+
+            <button
+                className="detailsBtn"
+                onClick={() =>
+                    navigate(`/school/${school.school_id}`)
+                }
+            >
+
+                View School →
+
+            </button>
+
+
+        </div>
+
+
+
+        {expanded && (
+
+            <div className="combinations">
+
+                {combinations.map(combo => (
+
+                    <div
+                        key={combo.code}
+                        className="comboCard"
+                    >
+
+                        <h4>
+                            {combo.code}
+                        </h4>
+
+                        <p>
+                            {combo.name}
+                        </p>
+
+                        <small>
+                            {combo.pathway}
+                        </small>
+
+                    </div>
+
+                ))}
+
+            </div>
+
+        )}
+
+
+    </article>
+    )
 }
-
-
 export default SchoolCard;
