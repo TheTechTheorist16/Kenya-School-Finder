@@ -1,65 +1,31 @@
 import { useSearch } from "../context/SearchContext";
 import api from "../services/api";
-import { useEffect, useRef } from "react";
-import { useState } from "react";
-import TrackSelector from "../components/TrackSelector";
+import { useEffect, useState } from "react";
 
 import Hero from "../components/Hero";
 import PathwaySelector from "../components/PathwaySelector";
+import TrackSelector from "../components/TrackSelector";
+import CombinationSelector from "../components/CombinationSelector";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
 import CompareBar from "../components/CompareBar";
 import Statistics from "../components/Statistics";
-import CombinationSelector from "../components/CombinationSelector";
 
 
 function Home() {
-const [selectedPathway, setSelectedPathway] = useState(null);
-const [selectedTrack, setSelectedTrack] = useState(null);
-const [combinations, setCombinations] = useState([]);
-useEffect(()=>{
 
-    if(!selectedTrack) return;
+    const [selectedPathway, setSelectedPathway] = useState(null);
 
+    const [selectedTrack, setSelectedTrack] = useState(null);
 
-    async function loadCombinations(){
+    const [combinations, setCombinations] = useState([]);
 
-        try{
+    const [selectedCombination, setSelectedCombination] = useState(null);
 
-            const response = await api.get(
-                "/subject-combinations",
-                {
-                    params:{
-                        track:selectedTrack
-                    }
-                }
-            );
-
-
-            setCombinations(response.data);
-
-
-        }catch(error){
-
-            console.error(error);
-
-            setCombinations([]);
-
-        }
-
-    }
-
-
-    loadCombinations();
-
-
-},[selectedTrack]);
-const [selectedCombination, setSelectedCombination] = useState(null);
 
     const {
 
         selectedSubjects,
-        setSelectedSubjects,
 
         schools,
         setSchools,
@@ -77,72 +43,85 @@ const [selectedCombination, setSelectedCombination] = useState(null);
 
 
 
-    
-async function loadCombinations(track) {
+    async function loadCombinations(track) {
 
-    try {
+        try {
 
-        const response = await api.get(
-            "/subject-combinations",
-            {
-                params: {
-                    track
+            const response = await api.get(
+                "/subject-combinations",
+                {
+                    params:{
+                        track
+                    }
                 }
-            }
-        );
+            );
 
-        setCombinations(response.data);
 
-    } catch(error) {
+            setCombinations(response.data);
 
-        console.error(
-            "Failed loading combinations:",
-            error
-        );
 
-        setCombinations([]);
+        } catch(error) {
+
+            console.error(
+                "Failed loading combinations:",
+                error
+            );
+
+
+            setCombinations([]);
+
+        }
 
     }
 
-}
 
 
     async function searchSchools() {
 
         try {
 
-            const response = await api.get("/search", {
+            const response = await api.get(
+                "/search",
+                {
 
-                params: {
+                    params: {
 
-                    subjects: selectedSubjects,
+                        subjects: selectedSubjects,
 
-                    school_name: schoolName,
+                        school_name: schoolName,
 
-                    county: filters.county,
+                        county: filters.county,
 
-                    sub_county: filters.sub_county,
+                        sub_county: filters.sub_county,
 
-                    gender: filters.gender,
+                        gender: filters.gender,
 
-                    cluster: filters.cluster,
+                        cluster: filters.cluster,
 
-                    accommodation: filters.accommodation,
+                        accommodation: filters.accommodation,
 
-                    institution_type: filters.institutionType,
-                    combination_code: selectedCombination?.code,
+                        institution_type: filters.institutionType,
+
+                        combination_code:
+                            selectedCombination?.code
+
+                    }
 
                 }
-
-            });
+            );
 
 
             setSchools(response.data);
 
 
-        } catch (error) {
+        } catch(error) {
 
-            console.error("Search failed:", error);
+
+            console.error(
+                "Search failed:",
+                error
+            );
+
 
             setSchools([]);
 
@@ -152,10 +131,46 @@ async function loadCombinations(track) {
 
 
 
+    // Load combinations when track changes
+    useEffect(()=>{
 
-    useEffect(() => {
+        if(selectedTrack){
 
-        if (!loaded) return;
+            loadCombinations(selectedTrack);
+
+        }
+        else{
+
+            setCombinations([]);
+
+        }
+
+
+        setSelectedCombination(null);
+
+
+    },[selectedTrack]);
+
+
+
+    // Search when combination changes
+    useEffect(()=>{
+
+        if(selectedCombination){
+
+            searchSchools();
+
+        }
+
+
+    },[selectedCombination]);
+
+
+
+    // Auto search after filters load
+    useEffect(()=>{
+
+        if(!loaded) return;
 
 
         const hasSearch =
@@ -178,14 +193,14 @@ async function loadCombinations(track) {
 
 
 
-        if (hasSearch) {
+        if(hasSearch){
 
             searchSchools();
 
         }
 
 
-    }, [loaded]);
+    },[loaded]);
 
 
 
@@ -208,46 +223,45 @@ async function loadCombinations(track) {
 
 
 
-           <PathwaySelector
+            <PathwaySelector
 
-    onSelect={(pathway)=>{
+                onSelect={(pathway)=>{
 
-        setSelectedPathway(pathway);
+                    setSelectedPathway(pathway);
 
-        setSelectedTrack(null);
+                    setSelectedTrack(null);
 
-    }}
+                }}
 
-/>
-<TrackSelector
+            />
 
-    pathway={selectedPathway}
 
-    onSelect={(track)=>{
 
-        setSelectedTrack(track);
+            <TrackSelector
 
-        setSelectedCombination(null);
+                pathway={selectedPathway}
 
-        loadCombinations(track);
+                onSelect={(track)=>{
 
-    }}
+                    setSelectedTrack(track);
 
-/>
-<CombinationSelector
+                }}
 
-    combinations={combinations}
+            />
 
-    onSelect={(combo)=>{
 
-        setSelectedCombination(combo);
 
-        searchSchools();
+            <CombinationSelector
 
-    }}
+                combinations={combinations}
 
-/>
+                onSelect={(combo)=>{
 
+                    setSelectedCombination(combo);
+
+                }}
+
+            />
 
 
 
@@ -257,79 +271,111 @@ async function loadCombinations(track) {
 
                 county={filters.county}
 
-                setCounty={(county) =>
+                setCounty={(county)=>
+
                     setFilters({
+
                         ...filters,
+
                         county
+
                     })
+
                 }
 
 
 
                 gender={filters.gender}
 
-                setGender={(gender) =>
-                    setFilters({
-                        ...filters,
-                        gender
-                    })
-                }
+                setGender={(gender)=>
 
+                    setFilters({
+
+                        ...filters,
+
+                        gender
+
+                    })
+
+                }
 
 
 
                 accommodation={filters.accommodation}
 
-                setAccommodation={(accommodation) =>
-                    setFilters({
-                        ...filters,
-                        accommodation
-                    })
-                }
+                setAccommodation={(accommodation)=>
 
+                    setFilters({
+
+                        ...filters,
+
+                        accommodation
+
+                    })
+
+                }
 
 
 
                 cluster={filters.cluster}
 
-                setCluster={(cluster) =>
-                    setFilters({
-                        ...filters,
-                        cluster
-                    })
-                }
+                setCluster={(cluster)=>
 
+                    setFilters({
+
+                        ...filters,
+
+                        cluster
+
+                    })
+
+                }
 
 
 
                 institutionType={filters.institutionType}
 
-                setInstitutionType={(institutionType) =>
-                    setFilters({
-                        ...filters,
-                        institutionType
-                    })
-                }
+                setInstitutionType={(institutionType)=>
 
+                    setFilters({
+
+                        ...filters,
+
+                        institutionType
+
+                    })
+
+                }
 
 
 
                 subCounty={filters.sub_county}
 
-                setSubCounty={(sub_county) =>
+                setSubCounty={(sub_county)=>
+
                     setFilters({
+
                         ...filters,
+
                         sub_county
+
                     })
+
                 }
 
 
             />
 
-<Statistics />
+
+
+            <Statistics />
+
 
             <Results schools={schools} />
+
+
             <CompareBar />
+
 
         </>
 
