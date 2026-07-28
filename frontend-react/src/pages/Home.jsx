@@ -25,22 +25,20 @@ function Home() {
 
     const {
 
-        selectedSubjects,
+    schools,
+    setSchools,
 
-        schools,
-        setSchools,
+    schoolName,
+    setSchoolName,
 
-        schoolName,
-        setSchoolName,
+    filters,
+    setFilters,
 
-        filters,
+    loaded
 
-        setFilters,
+} = useSearch();
 
-        loaded
-
-    } = useSearch();
-
+    
 
 
     async function loadCombinations(track) {
@@ -86,26 +84,27 @@ function Home() {
 
                     params: {
 
-                        subjects: selectedSubjects,
+    pathway: selectedPathway,
 
-                        school_name: schoolName,
+    track: selectedTrack,
 
-                        county: filters.county,
+    combination_code: selectedCombination?.code,
 
-                        sub_county: filters.sub_county,
+    school_name: schoolName,
 
-                        gender: filters.gender,
+    county: filters.county,
 
-                        cluster: filters.cluster,
+    sub_county: filters.sub_county,
 
-                        accommodation: filters.accommodation,
+    gender: filters.gender,
 
-                        institution_type: filters.institutionType,
+    cluster: filters.cluster,
 
-                        combination_code:
-                            selectedCombination?.code
+    accommodation: filters.accommodation,
 
-                    }
+    institution_type: filters.institutionType
+
+}
 
                 }
             );
@@ -167,40 +166,41 @@ function Home() {
 
 
 
-    // Auto search after filters load
-    useEffect(()=>{
+   // -------------------------------
+// Load combinations when track changes
+// -------------------------------
+useEffect(() => {
 
-        if(!loaded) return;
+    if (selectedTrack) {
 
+        loadCombinations(selectedTrack);
 
-        const hasSearch =
+    } else {
 
-            selectedSubjects.length > 0 ||
+        setCombinations([]);
 
-            schoolName ||
+    }
 
-            filters.county ||
+    setSelectedCombination(null);
 
-            filters.gender ||
-
-            filters.cluster ||
-
-            filters.accommodation ||
-
-            filters.institutionType ||
-
-            filters.sub_county;
+}, [selectedTrack]);
 
 
+// -------------------------------
+// Search when a combination is selected
+// -------------------------------
+useEffect(() => {
 
-        if(hasSearch){
+    if (!selectedCombination) return;
 
-            searchSchools();
+    searchSchools();
 
-        }
+}, [selectedCombination]);
 
 
-    },[loaded]);
+// -------------------------------
+// NO automatic search on page load
+// -------------------------------
 
 
 
