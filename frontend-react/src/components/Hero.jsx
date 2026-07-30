@@ -1,4 +1,10 @@
-function Hero({ searchTerm, setSearchTerm, handleSearch }) {
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+function Hero({
+    searchTerm,
+    setSearchTerm,
+    handleSearch,
+    loading
+}) {
 
     return (
 
@@ -29,11 +35,21 @@ function Hero({ searchTerm, setSearchTerm, handleSearch }) {
                 />
 
 
-                <button onClick={handleSearch}>
+                <button
+    onClick={handleSearch}
+    disabled={loading}
+>
 
-                    Find Schools
+    {loading ? (
+        <>
+            <AiOutlineLoading3Quarters className="loadingIcon" />
+            Searching...
+        </>
+    ) : (
+        "Find Schools"
+    )}
 
-                </button>
+</button>
 
 
             </div>

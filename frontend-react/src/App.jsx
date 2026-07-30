@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import SchoolDetails from "./pages/SchoolDetails";
 import NotFound from "./pages/NotFound";
 import Compare from "./pages/Compare";
+import Footer from "./components/Footer";
 
 function App() {
 
@@ -30,16 +31,14 @@ function App() {
                     element={<SchoolDetails />}
                 />
 
-                <Route
-                    path="*"
-                    element={<NotFound />}
-                />
+                
                 <Route
                     path="/compare"
                     element={<Compare />}
                 />
+                <Route path="*" element={<NotFound />} />
             </Routes>
-
+            <Footer />
         </BrowserRouter>
 
     );

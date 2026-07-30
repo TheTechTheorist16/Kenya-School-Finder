@@ -1,6 +1,7 @@
 import SchoolCard from "./SchoolCard";
+import SchoolCardSkeleton from "./SchoolCardSkeleton";
 
-function Results({ schools }) {
+function Results({ schools, loading }) {
 
     return (
 
@@ -10,7 +11,7 @@ function Results({ schools }) {
 
                 <h2>School Results</h2>
 
-                {schools.length > 0 && (
+                {!loading && schools.length > 0 && (
 
                     <p>
                         {schools.length} schools found
@@ -21,8 +22,19 @@ function Results({ schools }) {
             </div>
 
 
+            {loading ? (
 
-            {schools.length === 0 ? (
+                <div className="schoolsGrid">
+
+                    {Array.from({ length: 6 }).map((_, index) => (
+
+                        <SchoolCardSkeleton key={index} />
+
+                    ))}
+
+                </div>
+
+            ) : schools.length === 0 ? (
 
                 <div className="emptyCard">
 

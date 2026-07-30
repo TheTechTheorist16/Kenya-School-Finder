@@ -21,6 +21,7 @@ function Home() {
     const [combinations, setCombinations] = useState([]);
 
     const [selectedCombination, setSelectedCombination] = useState(null);
+    const [loading, setLoading] = useState(false);
 
 
     const {
@@ -74,59 +75,45 @@ function Home() {
 
 
 
-    async function searchSchools() {
+   async function searchSchools() {
 
-        try {
+    setLoading(true);
 
-            const response = await api.get(
-                "/search",
-                {
+    try {
 
-                    params: {
-
-    pathway: selectedPathway,
-
-    track: selectedTrack,
-
-    combination_code: selectedCombination?.code,
-
-    school_name: schoolName,
-
-    county: filters.county,
-
-    sub_county: filters.sub_county,
-
-    gender: filters.gender,
-
-    cluster: filters.cluster,
-
-    accommodation: filters.accommodation,
-
-    institution_type: filters.institutionType
-
-}
-
+        const response = await api.get(
+            "/search",
+            {
+                params: {
+                    pathway: selectedPathway,
+                    track: selectedTrack,
+                    combination_code: selectedCombination?.code,
+                    school_name: schoolName,
+                    county: filters.county,
+                    sub_county: filters.sub_county,
+                    gender: filters.gender,
+                    cluster: filters.cluster,
+                    accommodation: filters.accommodation,
+                    institution_type: filters.institutionType
                 }
-            );
+            }
+        );
 
+        setSchools(response.data);
 
-            setSchools(response.data);
+    } catch (error) {
 
+        console.error("Search failed:", error);
 
-        } catch(error) {
+        setSchools([]);
 
+    } finally {
 
-            console.error(
-                "Search failed:",
-                error
-            );
-
-
-            setSchools([]);
-
-        }
+        setLoading(false);
 
     }
+
+}
 
 
 
@@ -211,15 +198,17 @@ useEffect(() => {
         <>
 
 
-            <Hero
+           <Hero
 
-                searchTerm={schoolName}
+    searchTerm={schoolName}
 
-                setSearchTerm={setSchoolName}
+    setSearchTerm={setSchoolName}
 
-                handleSearch={searchSchools}
+    handleSearch={searchSchools}
 
-            />
+    loading={loading}
+
+/>
 
 
 
@@ -371,7 +360,10 @@ useEffect(() => {
             <Statistics />
 
 
-            <Results schools={schools} />
+          <Results
+    schools={schools}
+    loading={loading}
+/>
 
 
             <CompareBar />
