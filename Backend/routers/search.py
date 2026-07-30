@@ -122,6 +122,10 @@ def search_schools(
                 "stats": get_school_stats(school),
 
                 "matching_combinations": matching,
+                
+
+"selected_combination":
+    combination_code if combination_code else None,
 
                 "match_count": len(matching),
 

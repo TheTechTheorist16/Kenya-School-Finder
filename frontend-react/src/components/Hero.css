@@ -1,0 +1,65 @@
+.hero {
+    width: 100%;
+    min-height: 75vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 80px 8%;
+
+    background: linear-gradient(
+        135deg,
+        #1E3A8A 0%,
+        #2563EB 55%,
+        #3B82F6 100%
+    );
+
+    color: white;
+}
+.heroText h1{
+    font-size:3.5rem;
+    color:white;
+    margin-bottom:10px;
+}
+
+.heroText h2{
+    font-size:2.2rem;
+    color:#E5E7EB;
+    margin-bottom:20px;
+}
+
+.heroText p{
+    font-size:1.15rem;
+    line-height:1.8;
+    color:#F3F4F6;
+    max-width:650px;
+    margin-bottom:40px;
+}
+
+.heroText strong{
+    color:#FBBF24;
+}
+.searchBar input{
+    background:white;
+    color:#222;
+}
+.heroCard{
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.25);
+
+    color:white;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.2);
+}
+
+.heroCard h3{
+    color:white;
+}
+
+.heroCard p{
+    color:#E5E7EB;
+}

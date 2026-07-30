@@ -1,0 +1,312 @@
+.schoolCard{
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:25px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    border:1px solid #E5E7EB;
+
+}
+
+.schoolCard:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 40px rgba(37,99,235,.15);
+
+}
+
+/* ---------------- Header ---------------- */
+
+.cardHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+}
+
+.cardHeader h2{
+
+    margin:0;
+
+    color:#1E3A8A;
+
+    font-size:1.4rem;
+
+}
+
+.schoolCode{
+
+    color:#6B7280;
+
+    margin-top:6px;
+
+    font-size:.9rem;
+
+}
+
+/* ---------------- Score ---------------- */
+
+.scoreCircle{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    background:linear-gradient(135deg,#2563EB,#1E3A8A);
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+    font-size:1.2rem;
+
+}
+
+/* ---------------- Progress ---------------- */
+
+.progress{
+
+    width:100%;
+
+    height:10px;
+
+    background:#E5E7EB;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+}
+
+.progressFill{
+
+    height:100%;
+
+    background:linear-gradient(90deg,#22C55E,#16A34A);
+
+    border-radius:20px;
+
+    transition:.5s;
+
+}
+
+/* ---------------- Info ---------------- */
+
+.infoGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:12px;
+
+}
+
+.infoGrid div{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px;
+
+    background:#F8FAFC;
+
+    border-radius:12px;
+
+    color:#374151;
+
+}
+
+/* ---------------- Match ---------------- */
+
+.matchBox{
+
+    background:#EEF5FF;
+
+    border-left:5px solid #2563EB;
+
+    padding:15px;
+
+    border-radius:12px;
+
+}
+
+/* ---------------- Buttons ---------------- */
+
+.actionRow{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.saveBtn,
+.compareBtn{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.saveBtn{
+
+    background:#FEE2E2;
+
+    color:#DC2626;
+
+}
+
+.saveBtn:hover{
+
+    background:#FECACA;
+
+}
+
+.compareBtn{
+
+    background:#EEF5FF;
+
+    color:#2563EB;
+
+}
+
+.compareBtn:hover{
+
+    background:#DBEAFE;
+
+}
+
+/* ---------------- Details ---------------- */
+
+.detailsBtn{
+
+    width:100%;
+
+    border:none;
+
+    background:#2563EB;
+
+    color:white;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:1rem;
+
+    font-weight:bold;
+
+    transition:.25s;
+
+}
+
+.detailsBtn:hover{
+
+    background:#1D4ED8;
+
+}
+
+/* ---------------- Expand ---------------- */
+
+.expandBtn{
+
+    width:100%;
+
+    background:none;
+
+    border:none;
+
+    color:#2563EB;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+}
+
+/* ---------------- Combinations ---------------- */
+
+.comboGrid{
+
+    display:grid;
+
+    gap:15px;
+
+    margin-top:10px;
+
+}
+
+.comboCard{
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:#F9FAFB;
+
+    border:1px solid #E5E7EB;
+
+}
+
+.comboCard h4{
+
+    margin:0;
+
+    color:#1E3A8A;
+
+}
+
+.comboCard p{
+
+    margin:8px 0;
+
+    line-height:1.5;
+
+}
+
+.comboCard small{
+
+    color:#6B7280;
+
+}
