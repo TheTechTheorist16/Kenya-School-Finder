@@ -14,13 +14,10 @@ import Statistics from "../components/Statistics";
 
 function Home() {
 
-    const [selectedPathway, setSelectedPathway] = useState(null);
-
-    const [selectedTrack, setSelectedTrack] = useState(null);
-
+   
     const [combinations, setCombinations] = useState([]);
 
-    const [selectedCombination, setSelectedCombination] = useState(null);
+    
     const [loading, setLoading] = useState(false);
 
 
@@ -35,10 +32,18 @@ function Home() {
     filters,
     setFilters,
 
-    loaded
+    loaded,
+
+    selectedPathway,
+    setSelectedPathway,
+
+    selectedTrack,
+    setSelectedTrack,
+
+    selectedCombination,
+    setSelectedCombination
 
 } = useSearch();
-
     
 
 

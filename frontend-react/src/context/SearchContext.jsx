@@ -5,7 +5,11 @@ const SearchContext = createContext();
 
 export function SearchProvider({ children }) {
 
-    const [selectedSubjects, setSelectedSubjects] = useState([]);
+    const [selectedPathway, setSelectedPathway] = useState(null);
+
+const [selectedTrack, setSelectedTrack] = useState(null);
+
+const [selectedCombination, setSelectedCombination] = useState(null);
 
     const [favorites, setFavorites] = useState([]);
     const [compareSchools, setCompareSchools] = useState([]);
@@ -41,9 +45,17 @@ export function SearchProvider({ children }) {
             const data = JSON.parse(savedSearch);
 
 
-            setSelectedSubjects(
-                data.selectedSubjects || []
-            );
+           setSelectedPathway(
+    data.selectedPathway || null
+);
+
+setSelectedTrack(
+    data.selectedTrack || null
+);
+
+setSelectedCombination(
+    data.selectedCombination || null
+);
 
 
             setSchoolName(
@@ -99,20 +111,24 @@ export function SearchProvider({ children }) {
 
             JSON.stringify({
 
-                selectedSubjects,
+    selectedPathway,
 
-                schoolName,
+    selectedTrack,
 
-                filters
+    selectedCombination,
 
-            })
+    schoolName,
+
+    filters
+
+})
 
         );
 
 
     }, [
 
-        selectedSubjects,
+        selectedCombination,
 
         schoolName,
 
@@ -149,26 +165,34 @@ export function SearchProvider({ children }) {
 
             value={{
 
-                selectedSubjects,
-                setSelectedSubjects,
+    selectedPathway,
+    setSelectedPathway,
 
-                favorites,
-                setFavorites,
+    selectedTrack,
+    setSelectedTrack,
 
-                schools,
-                setSchools,
+    selectedCombination,
+    setSelectedCombination,
 
-                schoolName,
-                setSchoolName,
+    favorites,
+    setFavorites,
 
-                filters,
-                setFilters,
+    schools,
+    setSchools,
 
-                loaded,
-                compareSchools,
-                setCompareSchools
+    schoolName,
+    setSchoolName,
 
-            }}
+    filters,
+    setFilters,
+
+    loaded,
+
+    compareSchools,
+    setCompareSchools
+
+}}
+
 
         >
 

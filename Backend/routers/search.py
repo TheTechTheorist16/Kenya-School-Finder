@@ -7,21 +7,31 @@ from database import SessionLocal
 from models import School, SubjectCombination
 from services.school_stats import get_school_stats
 from services.recommendation import calculate_score
-from models import School, SubjectCombination
+
 router = APIRouter()
 
 
 @router.get("/search")
 def search_schools(
-    combination_code: str = None,
+
+    combination_code: Optional[str] = None,
+
     subjects: List[str] = Query(default=[]),
+
     school_name: Optional[str] = None,
+
     county: Optional[str] = None,
+
     sub_county: Optional[str] = None,
+
     cluster: Optional[str] = None,
+
     gender: Optional[str] = None,
+
     accommodation: Optional[str] = None,
+
     institution_type: Optional[str] = None,
+
 ):
 
     db = SessionLocal()
@@ -29,12 +39,7 @@ def search_schools(
     query = db.query(School).options(
         joinedload(School.combinations)
     )
-    if combination_code:
-     query = query.join(
-        SubjectCombination
-    ).filter(
-        SubjectCombination.combination_code == combination_code
-    )
+
     if school_name:
         query = query.filter(
             School.name.ilike(f"%{school_name}%")
@@ -70,7 +75,6 @@ def search_schools(
             School.institution_type == institution_type
         )
 
-    # Get all matching schools
     schools = query.all()
 
     selected = {
@@ -86,56 +90,93 @@ def search_schools(
 
         for combo in school.combinations:
 
-            combo_subjects = {
-                subject.strip()
-                for subject in combo.combination_name.split(",")
-            }
+            # Search using combination code
+            if combination_code:
 
-            if selected.issubset(combo_subjects):
+                if combo.combination_code == combination_code:
 
-                matching.append({
+                    matching.append({
 
-                    "code": combo.combination_code,
-                    "name": combo.combination_name,
-                    "pathway": combo.pathway
+                        "code": combo.combination_code,
+                        "name": combo.combination_name,
+                        "pathway": combo.pathway
 
-                })
+                    })
 
-        if matching:
+            # Search using selected subjects
+            elif selected:
 
-            score = calculate_score(
-                school,
-                matching
-            )
+                combo_subjects = {
 
-            results.append({
+                    subject.strip()
 
-                "school_id": school.school_id,
-                "name": school.name,
-                "county": school.county,
-                "sub_county": school.sub_county,
-                "cluster": school.cluster,
-                "gender": school.gender,
-                "accommodation": school.accommodation,
-                "institution_type": school.institution_type,
+                    for subject in combo.combination_name.split(",")
 
-                "stats": get_school_stats(school),
+                }
 
-                "matching_combinations": matching,
-                
+                if selected.issubset(combo_subjects):
 
-"selected_combination":
-    combination_code if combination_code else None,
+                    matching.append({
 
-                "match_count": len(matching),
+                        "code": combo.combination_code,
+                        "name": combo.combination_name,
+                        "pathway": combo.pathway
 
-                "recommendation_score": score
+                    })
 
-            })
+        # Skip ONLY if user searched for combinations
+        if (combination_code or selected) and not matching:
+            continue
+
+        score = calculate_score(
+            school,
+            matching
+        )
+
+        results.append({
+
+            "school_id": school.school_id,
+
+            "name": school.name,
+
+            "region": school.region,
+
+            "county": school.county,
+
+            "sub_county": school.sub_county,
+
+            "knec_code": school.knec_code,
+
+            "cluster": school.cluster,
+
+            "category": school.category,
+
+            "gender": school.gender,
+
+            "accommodation": school.accommodation,
+
+            "institution_type": school.institution_type,
+
+            "disability_type": school.disability_type,
+
+            "stats": get_school_stats(school),
+
+            "matching_combinations": matching,
+
+            "selected_combination": combination_code,
+
+            "match_count": len(matching),
+
+            "recommendation_score": score
+
+        })
 
     results.sort(
+
         key=lambda school: school["recommendation_score"],
+
         reverse=True
+
     )
 
     db.close()

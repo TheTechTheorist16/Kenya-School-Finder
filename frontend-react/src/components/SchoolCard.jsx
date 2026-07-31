@@ -15,7 +15,7 @@ import { useSearch } from "../context/SearchContext";
 import "./SchoolCard.css";
 
 function SchoolCard({ school }) {
-
+console.log(school);
     const navigate = useNavigate();
 
     const [expanded, setExpanded] = useState(false);
@@ -112,10 +112,8 @@ function SchoolCard({ school }) {
                     </h2>
 
                     <p className="schoolCode">
-
-                        Code: {school.school_id}
-
-                    </p>
+    KNEC Code: {school.knec_code || "N/A"}
+</p>
 
                 </div>
 
@@ -146,40 +144,35 @@ function SchoolCard({ school }) {
 
             <div className="infoGrid">
 
-                <div>
+    <div>
+        <FaMapMarkerAlt />
+        {school.county}
+    </div>
 
-                    <FaMapMarkerAlt />
+    <div>
+        <FaSchool />
+        {school.category}
+    </div>
 
-                    {school.county}
+    <div>
+        ⭐ Cluster {school.cluster}
+    </div>
 
-                </div>
+    <div>
+        <FaUsers />
+        {school.gender}
+    </div>
 
-                <div>
+    <div>
+        <FaBed />
+        {school.accommodation}
+    </div>
 
-                    <FaSchool />
+    <div>
+        🏢 {school.institution_type}
+    </div>
 
-                    Cluster {school.cluster}
-
-                </div>
-
-                <div>
-
-                    <FaUsers />
-
-                    {school.gender}
-
-                </div>
-
-                <div>
-
-                    <FaBed />
-
-                    {school.accommodation}
-
-                </div>
-
-            </div>
-
+</div>
 
             <div className="matchBox">
 
@@ -246,50 +239,25 @@ function SchoolCard({ school }) {
             </div>
 
 
-            <button
+            <div className="buttonGroup">
 
-                className="detailsBtn"
+    <button
+        className="detailsBtn"
+        onClick={() => navigate(`/school/${school.school_id}`)}
+    >
+        View School
+    </button>
 
-                onClick={()=>
+    <button
+        className="expandBtn"
+        onClick={() => setExpanded(!expanded)}
+    >
+        {expanded
+            ? "Hide Subject Combinations"
+            : "Show Subject Combinations"}
+    </button>
 
-                    navigate(
-                        `/school/${school.school_id}`
-                    )
-
-                }
-
-            >
-
-                View School
-
-            </button>
-
-
-            <button
-
-                className="expandBtn"
-
-                onClick={()=>
-
-                    setExpanded(!expanded)
-
-                }
-
-            >
-
-                {
-
-                    expanded ?
-
-                    "Hide Subject Combinations"
-
-                    :
-
-                    "Show Subject Combinations"
-
-                }
-
-            </button>
+</div>
 
 
             {

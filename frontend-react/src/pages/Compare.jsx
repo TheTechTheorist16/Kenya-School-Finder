@@ -2,59 +2,60 @@ import { useEffect, useState } from "react";
 import { useSearch } from "../context/SearchContext";
 import api from "../services/api";
 
-
-function calculateMatch(school, selectedSubjects) {
-
-    if (selectedSubjects.length === 0) return 0;
-
-
-    const offeredSubjects = new Set();
-
-
-    school.combinations.forEach(combo => {
-
-        combo.name
-            .split(",")
-            .forEach(subject => {
-
-                offeredSubjects.add(
-                    subject.trim().toLowerCase()
-                );
-
-            });
-
-    });
-
-
-    const matched = selectedSubjects.filter(subject =>
-
-        offeredSubjects.has(
-            subject.trim().toLowerCase()
-        )
-
-    ).length;
-
-
-    return Math.round(
-        (matched / selectedSubjects.length) * 100
-    );
-
-}
-
-
-
 function Compare() {
 
-
     const {
+
         compareSchools,
-        setCompareSchools,
-        selectedSubjects
+        setCompareSchools
+
     } = useSearch();
 
-
-
     const [schools, setSchools] = useState([]);
+
+    useEffect(() => {
+
+        async function loadSchools() {
+
+            try {
+
+                const responses = await Promise.all(
+
+                    compareSchools.map(id =>
+                        api.get(`/schools/${id}`)
+                    )
+
+                );
+
+                setSchools(
+
+                    responses.map(r => r.data)
+
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+            }
+
+        }
+
+        if (compareSchools.length > 0) {
+
+            loadSchools();
+
+        }
+
+        else {
+
+            setSchools([]);
+
+        }
+
+    }, [compareSchools]);
 
 
 
@@ -63,7 +64,9 @@ function Compare() {
         setCompareSchools(
 
             compareSchools.filter(
+
                 schoolId => schoolId !== id
+
             )
 
         );
@@ -72,473 +75,314 @@ function Compare() {
 
 
 
-
-    const bestSchool = schools.length > 0
-
-        ? schools.reduce((best, current) => {
-
-            const currentScore =
-                calculateMatch(
-                    current,
-                    selectedSubjects
-                );
-
-
-            const bestScore =
-                calculateMatch(
-                    best,
-                    selectedSubjects
-                );
-
-
-            return currentScore > bestScore
-                ? current
-                : best;
-
-
-        })
-
-        : null;
-
-
-
-
-
-    useEffect(() => {
-
-
-        async function loadSchools() {
-
-
-            try {
-
-
-                const responses = await Promise.all(
-
-                    compareSchools.map(id =>
-
-                        api.get(`/schools/${id}`)
-
-                    )
-
-                );
-
-
-                setSchools(
-
-                    responses.map(
-                        response => response.data
-                    )
-
-                );
-
-
-            }
-
-            catch(error) {
-
-                console.error(
-                    "Failed loading comparison schools",
-                    error
-                );
-
-            }
-
-
-        }
-
-
-
-        if(compareSchools.length > 0) {
-
-
-            loadSchools();
-
-
-        }
-
-        else {
-
-
-            setSchools([]);
-
-
-        }
-
-
-    }, [compareSchools]);
-
-
-
-
-
     return (
 
         <div className="comparePage">
 
-
-            <h1>
-                ⚖️ Compare Schools
-            </h1>
-
-
+            <h1>⚖️ Compare Schools</h1>
 
             {
-                bestSchool && (
 
-                    <div className="bestSchoolCard">
+                schools.length === 0
 
+                    ?
 
-                        <h2>
-                            🏆 Recommended School
-                        </h2>
+                    <p>No schools selected for comparison.</p>
 
+                    :
 
-                        <h3>
-                            {bestSchool.name}
-                        </h3>
+                    <table className="compareTable">
 
+                        <thead>
 
-                        <p>
-                            🎯 
-                            {
-                                calculateMatch(
-                                    bestSchool,
-                                    selectedSubjects
-                                )
-                            }%
-                            Match
-                        </p>
+                            <tr>
 
+                                <th>Feature</th>
 
+                                {
 
-                        <ul>
+                                    schools.map(school => (
 
-                            <li>
-                                ✅ Best subject match
-                            </li>
+                                        <th key={school.school_id}>
 
+                                            {school.name}
 
-                            <li>
-                                📚 
-                                {bestSchool.combinations.length}
-                                combinations
-                            </li>
+                                        </th>
 
+                                    ))
 
-                            <li>
-                                🏠 {bestSchool.accommodation}
-                            </li>
+                                }
 
+                            </tr>
 
-                            <li>
-                                🏫 {bestSchool.institution_type}
-                            </li>
+                        </thead>
 
+                        <tbody>
 
-                        </ul>
+                            <tr>
 
+                                <td>County</td>
 
-                    </div>
+                                {
 
-                )
-            }
+                                    schools.map(s => (
 
+                                        <td key={s.school_id}>
 
+                                            {s.county}
 
+                                        </td>
 
+                                    ))
 
+                                }
 
-            {
-                schools.length === 0 ? (
+                            </tr>
 
-                    <p>
-                        No schools selected for comparison.
-                    </p>
+                            <tr>
 
-                )
+                                <td>Sub County</td>
 
-                :
+                                {
 
-                (
+                                    schools.map(s => (
 
-                <>
+                                        <td key={s.school_id}>
 
+                                            {s.sub_county}
 
-                <section className="matchSection">
+                                        </td>
 
+                                    ))
 
-                    <h2>
-                        🎯 Subject Match
-                    </h2>
+                                }
 
+                            </tr>
 
+                            <tr>
 
-                    {
-                        schools.map(school => {
+                                <td>Cluster</td>
 
+                                {
 
-                            const score =
-                                calculateMatch(
-                                    school,
-                                    selectedSubjects
-                                );
+                                    schools.map(s => (
 
+                                        <td key={s.school_id}>
 
+                                            {s.cluster}
 
-                            const offeredSubjects =
-                                new Set();
+                                        </td>
 
+                                    ))
 
+                                }
 
-                            school.combinations.forEach(combo => {
+                            </tr>
 
+                            <tr>
 
-                                combo.name
-                                .split(",")
-                                .forEach(subject => {
+                                <td>Gender</td>
 
+                                {
 
-                                    offeredSubjects.add(
+                                    schools.map(s => (
 
-                                        subject
-                                        .trim()
-                                        .toLowerCase()
+                                        <td key={s.school_id}>
 
-                                    );
+                                            {s.gender}
 
+                                        </td>
 
-                                });
+                                    ))
 
+                                }
 
-                            });
+                            </tr>
 
+                            <tr>
 
+                                <td>Accommodation</td>
 
+                                {
 
-                            return (
+                                    schools.map(s => (
 
-                            <div
-                                className="matchCard"
-                                key={school.school_id}
-                            >
+                                        <td key={s.school_id}>
 
+                                            {s.accommodation}
 
-                                <div className="matchHeader">
+                                        </td>
 
+                                    ))
 
-                                    <h3>
-                                        {school.name}
-                                    </h3>
+                                }
 
+                            </tr>
 
-                                    <span className="matchBadge">
+                            <tr>
 
-                                        {score}% Match
+                                <td>Institution</td>
 
-                                    </span>
+                                {
 
+                                    schools.map(s => (
 
-                                </div>
+                                        <td key={s.school_id}>
 
+                                            {s.institution_type}
 
+                                        </td>
 
+                                    ))
 
+                                }
 
-                                <div className="progressBar">
+                            </tr>
 
+                            <tr>
 
-                                    <div
+                                <td>KNEC Code</td>
 
-                                        className="progressFill"
+                                {
 
-                                        style={{
-                                            width:`${score}%`
-                                        }}
+                                    schools.map(s => (
 
-                                    />
+                                        <td key={s.school_id}>
 
+                                            {s.knec_code || "N/A"}
 
-                                </div>
+                                        </td>
 
+                                    ))
 
+                                }
 
+                            </tr>
 
+                            <tr>
 
-                                <div className="subjectChecklist">
+                                <td>Total Combinations</td>
 
+                                {
 
-                                    {
-                                        selectedSubjects.map(subject => {
+                                    schools.map(s => (
 
+                                        <td key={s.school_id}>
 
-                                            const found =
-                                                offeredSubjects.has(
-                                                    subject
-                                                    .toLowerCase()
-                                                );
+                                            {s.combinations.length}
 
+                                        </td>
 
+                                    ))
 
-                                            return (
+                                }
 
-                                                <div
+                            </tr>
 
-                                                    className="subjectStatus"
+                            <tr>
 
-                                                    key={subject}
+                                <td>STEM</td>
 
-                                                >
+                                {
 
-                                                    {
-                                                        found
-                                                        ? "✅"
-                                                        : "❌"
-                                                    }
+                                    schools.map(s => (
 
-                                                    {" "}
-                                                    {subject}
+                                        <td key={s.school_id}>
 
-                                                </div>
+                                            {s.stats?.stem ?? "-"}
 
-                                            );
+                                        </td>
 
+                                    ))
 
-                                        })
-                                    }
+                                }
 
+                            </tr>
 
-                                </div>
+                            <tr>
 
+                                <td>Social Sciences</td>
 
+                                {
 
-                            </div>
+                                    schools.map(s => (
 
-                            );
+                                        <td key={s.school_id}>
 
+                                            {s.stats?.social ?? "-"}
 
-                        })
-                    }
+                                        </td>
 
+                                    ))
 
-                </section>
+                                }
 
+                            </tr>
 
+                            <tr>
 
+                                <td>Arts & Sports</td>
 
+                                {
 
+                                    schools.map(s => (
 
-                <h2>
-                    🏫 School Comparison
-                </h2>
+                                        <td key={s.school_id}>
 
+                                            {s.stats?.arts ?? "-"}
 
+                                        </td>
 
+                                    ))
 
-                <div className="comparisonGrid">
+                                }
 
+                            </tr>
 
-                {
-                    schools.map(school => (
+                            <tr>
 
-                    <div
+                                <td>Remove</td>
 
-                        key={school.school_id}
+                                {
 
-                        className="schoolCard"
+                                    schools.map(s => (
 
-                    >
+                                        <td key={s.school_id}>
 
+                                            <button
 
-                        <button
+                                                className="removeCompareBtn"
 
-                            className="removeCompareBtn"
+                                                onClick={() =>
 
-                            onClick={() =>
-                                removeSchool(
-                                    school.school_id
-                                )
-                            }
+                                                    removeSchool(s.school_id)
 
-                        >
+                                                }
 
-                            ❌ Remove
+                                            >
 
-                        </button>
+                                                ❌
 
+                                            </button>
 
+                                        </td>
 
+                                    ))
 
-                        <h3>
-                            {school.name}
-                        </h3>
+                                }
 
+                            </tr>
 
+                        </tbody>
 
-                        <p>
-                            📍 {school.county}
-                        </p>
-
-
-                        <p>
-                            ⭐ Cluster {school.cluster}
-                        </p>
-
-
-                        <p>
-                            👥 {school.gender}
-                        </p>
-
-
-                        <p>
-                            🏠 {school.accommodation}
-                        </p>
-
-
-                        <p>
-                            📚 
-                            {school.combinations.length}
-                            Subject Combinations
-                        </p>
-
-
-                        <p>
-
-                            🎯 
-                            {
-                                calculateMatch(
-                                    school,
-                                    selectedSubjects
-                                )
-                            }%
-                            Match
-
-                        </p>
-
-
-                    </div>
-
-                    ))
-                }
-
-
-                </div>
-
-
-
-                </>
-
-                )
+                    </table>
 
             }
-
-
 
         </div>
 
     );
 
 }
-
 
 export default Compare;
